@@ -23,8 +23,8 @@ module.exports = class PerlTidy extends Beautifier
       '--standard-output'
       '--standard-error-output'
       '--quiet'
-      "--profile=#{options.perltidy_profile}" if options.perltidy_profile?.length
+      "--profile=#{options.perltidy_profile}" if options.perltidy_profile?
       @tempFile("input", text)
       ], help: {
-        link: "http://perltidy.sourceforge.net/"
+      link: "http://perltidy.sourceforge.net/"
       })

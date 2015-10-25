@@ -19,7 +19,6 @@ module.exports = class Uncrustify extends Beautifier
     Pawn: true
     Vala: true
     Java: true
-    Arduino: true
   }
 
   beautify: (text, language, options) ->
@@ -66,8 +65,6 @@ module.exports = class Uncrustify extends Beautifier
           lang = "VALA"
         when "Java"
           lang = "JAVA"
-        when "Arduino"
-          lang = "CPP"
 
       @run("uncrustify", [
         "-c"
@@ -79,7 +76,7 @@ module.exports = class Uncrustify extends Beautifier
         "-l"
         lang
         ], help: {
-          link: "http://sourceforge.net/projects/uncrustify/"
+        link: "http://sourceforge.net/projects/uncrustify/"
         })
         .then(=>
           @readFile(outputFile)

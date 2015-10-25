@@ -85,9 +85,6 @@ install:
   # HTMLBeautifier
   - gem install htmlbeautifier
   - where htmlbeautifier
-  # Puppet-Lint
-  - gem install puppet-lint
-  - where puppet-lint
 
   # emacs
   - cinst emacs -y
@@ -115,8 +112,8 @@ build_script:
 
   - cd %APPVEYOR_BUILD_FOLDER%
   # Install languages to Atom
-  - apm install language-marko language-tss language-html-swig language-svg
+  - apm install language-marko language-tss language-html-swig
   # Show current PATH
   - echo %PATH%
   # Run tests on package
-  - apm test --path %LOCALAPPDATA%/atom/bin/atom.cmd
+  - apm test --one --path %LOCALAPPDATA%/atom/bin/atom.cmd

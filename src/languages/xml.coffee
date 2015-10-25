@@ -9,14 +9,14 @@ module.exports = {
   Supported Grammars
   ###
   grammars: [
-    "XML", "XSD", "XSL"
+    "XML"
   ]
 
   ###
   Supported extensions
   ###
   extensions: [
-    'xml', 'xsd', 'xsl'
+    'xml'
   ]
 
   defaultBeautifier: "Pretty Diff"

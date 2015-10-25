@@ -4,7 +4,6 @@ pkg = require('../package.json')
 
 # Dependencies
 plugin = module.exports
-{CompositeDisposable} = require 'atom'
 _ = require("lodash")
 Beautifiers = require("./beautifiers")
 beautifier = new Beautifiers()
@@ -323,8 +322,7 @@ debug = () ->
 
   # Language
   language = beautifier.getLanguage(grammarName, filePath)
-
-  addInfo('Original File Language', language?.name)
+  addInfo('Original File Language', language.name)
 
   # Get current editor's text
   text = editor.getText()
@@ -349,7 +347,7 @@ debug = () ->
     ] = allOptions
     projectOptions = allOptions[4..]
 
-    finalOptions = beautifier.getOptionsForLanguage(allOptions, language?)
+    finalOptions = beautifier.getOptionsForLanguage(allOptions, language)
 
     # Show options
     addInfo('Editor Options', "\n" +
@@ -370,7 +368,7 @@ debug = () ->
     addInfo('Final Options', "\n" +
     "Final combined options that are used\n" +
     "```json\n#{JSON.stringify(finalOptions, undefined, 4)}\n```")
-
+    
     addInfo('Package Settings', "\n" +
     "The raw package settings options\n" +
     "```json\n#{JSON.stringify(atom.config.get('atom-beautify'), undefined, 4)}\n```")
@@ -432,15 +430,8 @@ handleSaveEvent = ->
         beautifyFilePath(filePath, ->
           buffer.reload()
           logger.verbose('restore editor positions', posArray,origScrollTop)
-          # Let the scrollTop setting run after all the save related stuff is run,
-          # otherwise setScrollTop is not working, probably because the cursor
-          # addition happens asynchronously
-          setTimeout ( ->
-            setCursors(editor, posArray)
-            editor.setScrollTop(origScrollTop)
-            # console.log "setScrollTop"
-            return
-          ), 0
+          setCursors(editor, posArray)
+          editor.setScrollTop(origScrollTop)
         )
       )
     plugin.subscribe disposable
@@ -448,13 +439,10 @@ handleSaveEvent = ->
 Subscriber.extend plugin
 plugin.config = _.merge(require('./config.coffee'), defaultLanguageOptions)
 plugin.activate = ->
-  @subscriptions = new CompositeDisposable
-  @subscriptions.add handleSaveEvent()
-  @subscriptions.add plugin.subscribe atom.config.observe("atom-beautify.beautifyOnSave", handleSaveEvent)
-  @subscriptions.add atom.commands.add "atom-workspace", "atom-beautify:beautify-editor", beautify
-  @subscriptions.add atom.commands.add "atom-workspace", "atom-beautify:help-debug-editor", debug
-  @subscriptions.add atom.commands.add ".tree-view .file .name", "atom-beautify:beautify-file", beautifyFile
-  @subscriptions.add atom.commands.add ".tree-view .directory .name", "atom-beautify:beautify-directory", beautifyDirectory
+  handleSaveEvent()
+  plugin.subscribe atom.config.observe("atom-beautify.beautifyOnSave", handleSaveEvent)
+  atom.commands.add "atom-workspace", "atom-beautify:beautify-editor", beautify
+  atom.commands.add "atom-workspace", "atom-beautify:help-debug-editor", debug
+  atom.commands.add ".tree-view .file .name", "atom-beautify:beautify-file", beautifyFile
+  atom.commands.add ".tree-view .directory .name", "atom-beautify:beautify-directory", beautifyDirectory
 
-plugin.deactivate = ->
-  @subscriptions.dispose()

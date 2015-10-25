@@ -16,8 +16,8 @@ module.exports = class PrettyDiff extends Beautifier
       ]
       cssinsertlines: "newline_between_rules"
       comments: ["indent_comments", (indent_comments) ->
-        if (indent_comments is false) then \
-          "noindent" else "indent"
+        if (indent_comments is true) then \
+          "indent" else "noindent"
       ]
       force: "force_indentation"
       quoteConvert: "convert_quotes"
@@ -27,15 +27,12 @@ module.exports = class PrettyDiff extends Beautifier
       ]
       wrap: "wrap_line_length"
       space: "space_after_anon_function"
-      noleadzero: "no_lead_zero"
-      endcomma: "end_with_comma"
     # Apply language-specific options
     CSV: true
     ERB: true
     EJS: true
     HTML: true
     XML: true
-    SVG: true
     Spacebars: true
     JSX: true
     JavaScript: true
@@ -65,11 +62,11 @@ module.exports = class PrettyDiff extends Beautifier
           lang = "ejs"
         when "ERB"
           lang = "html_ruby"
-        when "Handlebars", "Mustache", "Spacebars", "Swig"
+        when "Handlebars", "Mustache", "Spacebars"
           lang = "handlebars"
-        when "SGML"
+        when "SGML", "Swig"
           lang = "markup"
-        when "XML", "Visualforce", "SVG"
+        when "XML", "Visualforce"
           lang = "xml"
         when "HTML"
           lang = "html"

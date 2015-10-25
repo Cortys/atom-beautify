@@ -8,16 +8,14 @@ module.exports = {
   Supported Grammars
   ###
   grammars: [
-    "Handlebars",
-    "HTML (Handlebars)"
+    "Handlebars"
   ]
 
   ###
   Supported extensions
   ###
   extensions: [
-    "hbs",
-    "handlebars"
+    "hbs"
   ]
 
   options: []

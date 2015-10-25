@@ -15,29 +15,26 @@ module.exports = class Rubocop extends Beautifier
 
   beautify: (text, language, options) ->
 
-    path = require 'path'
-    fs = require 'fs'
+    # Generate config file
+    yaml = require("yaml-front-matter")
 
-    configFile = path.join(atom.project.getPaths()[0], ".rubocop.yml")
-
-    if fs.existsSync(configFile)
-      @debug("rubocop", config, fs.readFileSync(configFile, 'utf8'))
-    else
-      yaml = require("yaml-front-matter")
-      # Generate config file
-      config = {
-        "Style/IndentationWidth":
-          "Width": options.indent_size
-      }
-
-      configFile = @tempFile("rubocop-config", yaml.safeDump(config))
-      @debug("rubocop", config, configFile)
+    config = {
+      "Style/IndentationWidth":
+        "Width": options.indent_size
+    }
+    configStr = yaml.safeDump(config)
+    @debug("rubocop", config, configStr)
 
     @run("rubocop", [
       "--auto-correct"
-      "--config", configFile
+      "--config", @tempFile("rubocop-config", configStr)
       tempFile = @tempFile("temp", text)
       ], {ignoreReturnCode: true})
       .then(=>
+        # console.log('rubocop', arguments, tempFile)
         @readFile(tempFile)
+        # .then((text) ->
+        #     console.log('rubocop', text)
+        #     return text
+        # )
       )

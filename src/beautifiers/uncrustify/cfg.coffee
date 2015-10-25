@@ -21,7 +21,9 @@ module.exports = (options, cb) ->
   # jshint ignore: start
   ic = options.indent_char
   if options.indent_with_tabs is 0 or options.indent_with_tabs is 1 or options.indent_with_tabs is 2
-    null # Ignore indent_char option
+
+
+  # Ignore indent_char option
   else if ic is " "
     options.indent_with_tabs = 0 # Spaces only
   else if ic is "\t"
