@@ -1,22 +1,22 @@
 module.exports = {
 
-  name: "XML"
-  description: "XML"
-  namespace: "xml"
-  fallback: ['html']
+  name: "SVG"
+  description: "SVG"
+  namespace: "svg"
+  fallback: ['html','xml']
 
   ###
   Supported Grammars
   ###
   grammars: [
-    "XML", "XSD", "XSL"
+    "SVG"
   ]
 
   ###
   Supported extensions
   ###
   extensions: [
-    'xml', 'xsd', 'xsl'
+    'svg'
   ]
 
   defaultBeautifier: "Pretty Diff"
